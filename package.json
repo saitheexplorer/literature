@@ -29,6 +29,8 @@
     "immutable": "3.7.5",
     "lodash": "3.10.1",
     "react": "0.14.5",
+    "react-dom": "0.14.5",
+    "react-redux": "4.0.6",
     "redux": "3.0.4",
     "redux-logger": "2.3.1",
     "redux-thunk": "1.0.3",
