@@ -4,12 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "npm run clean && webpack",
-    "build:dist": "npm run clean && NODE_ENV=production webpack -p",
-    "clean": "rm dist/* && touch dist/.gitkeep && cp src/index.html dist",
+    "build": "webpack",
+    "build:dist": "NODE_ENV=production webpack -p",
+    "clean": "rm dist/* && touch dist/.gitkeep",
+    "copy": "cp src/index.html dist",
     "watch": "npm run build -- --watch",
-    "serve:dev": "npm run clean && webpack-dev-server --content-base dist --inline --hot",
-    "serve:dist": "npm run build:dist && node index.js"
+    "serve:dev": "npm run clean && npm run copy && webpack-dev-server --content-base dist --inline --hot",
+    "serve:dist": "npm run copy && npm run build:dist && node index.js"
   },
   "repository": {
     "type": "git",
