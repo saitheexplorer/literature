@@ -10,7 +10,7 @@ import App from 'components/App';
 
 console.clear();
 
-Store.dispatch(startGame(48));
+Store.dispatch(startGame(6));
 
 for (let i = 1; i < 100; i++) {
   Store.dispatch(takeCpuTurn());
