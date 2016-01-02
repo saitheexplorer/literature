@@ -1,8 +1,10 @@
 import { shuffle } from 'lodash';
+import { List } from 'immutable';
 
 import Constants from 'constants';
 
 import { askPlayer } from 'actions/turn';
+import { tryToDeclareSet } from 'actions/set';
 
 export function takeCpuTurn() {
   return (dispatch, getState) => {
@@ -17,6 +19,14 @@ export function takeCpuTurn() {
 
     let memory = state.memoryDeck;
 
+    // first declare any sets that have 100% confidence
+    let setToDeclare = List().first();
+    let callsToDeclare = List();
+
+    // TODO: implement this
+
+    if (setToDeclare && callsToDeclare.size === 6) return Store.dispatch(tryToDeclareSet(setToDeclare, callsToDeclare));
+
     let askableCards = state
       .cardsInPlay
       .filterNot(card => card.get('owner') === currentPlayer)
@@ -25,7 +35,7 @@ export function takeCpuTurn() {
 
     let knownCards = memory.filter(card => askableCards.find(mCard => card.get('card') === mCard.get('card')));
 
-    // first take cards with known location
+    // next take cards with known location
     let cardToTake = knownCards
       .filter(card => card.get('owner'))
       .filter(card => opponents.indexOf(card.get('owner')) > -1)
@@ -33,12 +43,16 @@ export function takeCpuTurn() {
 
     if (cardToTake) return dispatch(askPlayer(currentPlayer, cardToTake.get('owner'), cardToTake.get('card')));
 
+    // next make intelligent guess based on previous questions
+
+    // TODO: implement this
+
     // last make a wild guess
     let cardToWildGuess = knownCards.first();
     let opponentToWildGuess = shuffle(opponents).pop();
 
     if (cardToWildGuess) return dispatch(askPlayer(currentPlayer, opponentToWildGuess, cardToWildGuess.get('card')));
 
-    console.log('no more moves');
+    console.log('no more moves to make.');
   };
 }
