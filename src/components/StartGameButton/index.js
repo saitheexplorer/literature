@@ -1,10 +1,9 @@
 import React from 'react';
 
 import Store from 'stores';
-import { bungleSet, startGame, declareSet } from 'actions';
+import { startGame } from 'actions/game';
 
-
-class StartGameButton extends React.Component {
+export default class StartGameButton extends React.Component {
   constructor(props) {
     super(props);
 
@@ -19,6 +18,4 @@ class StartGameButton extends React.Component {
     if (!this.props.gameStarted) return <button onClick={this.onClick}>Start</button>;
   }
 }
-
-export default StartGameButton;
 
