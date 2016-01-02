@@ -12,6 +12,8 @@ import GameInfo from 'components/GameInfo';
 import Menu from 'components/Menu';
 import Messages from 'components/Messages';
 
+import style from './style.css';
+
 class App extends React.Component {
   render() {
     if (!this.props.gameStarted) return <StartGameButton gameStarted={this.props.gameStarted} />;

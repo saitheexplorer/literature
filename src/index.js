@@ -16,8 +16,6 @@ for (let i = 1; i < 100; i++) {
   Store.dispatch(takeCpuTurn());
 }
 
-
-
 render(
   <Provider store={Store}>
     <App />
