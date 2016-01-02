@@ -1,0 +1,4 @@
+- write tests
+- computer declare sets
+- intelligent computer guesses
+- render with card images
