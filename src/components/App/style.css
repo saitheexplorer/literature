@@ -1,18 +1,6 @@
-.error-banner {
-  color: red;
-}
-
 .column {
   display: inline;
   float: left;
-}
-
-.main {
-  width: 50%;
-}
-
-.menu {
-  width: 50%;
 }
 
 .container {
