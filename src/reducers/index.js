@@ -1,54 +1,13 @@
 import { combineReducers } from 'redux';
-import Immutable, { Map, List, OrderedSet, Set } from 'immutable';
+import Immutable, { Map, List, OrderedSet, Range, Set } from 'immutable';
 
 import Constants from 'constants';
 import LiteratureDeck, { Sets } from 'utils/deck';
+import { cardFromId } from 'utils/card';
 
-function gameStarted(state = false, action) {
-  switch (action.type) {
-    case Constants.START_GAME:
-      return true;
-
-    default:
-      return state;
-  }
-}
-
-function numberOfPlayers(state = 0, action) {
-  switch (action.type) {
-    case Constants.START_GAME:
-      return action.numberOfPlayers;
-
-    default:
-      return state;
-  }
-}
-
-function currentTurn(state = '1', action) {
-  switch (action.type) {
-    case Constants.CHANGE_TURN:
-      return action.player;
-
-    default:
-      return state;
-  }
-}
-
-function score(state = Map({A: 0, B: 0}), action) {
-  let team = action.player % 2 === 1 ? 'A' : 'B';
-  let score = state.get(team);
-
-  switch (action.type) {
-    case Constants.BUNGLE_SET:
-      return state.set(team, score - 0.5);
-
-    case Constants.DECLARE_SET:
-      return state.set(team, score + 1);
-
-    default:
-      return state;
-  }
-}
+import messages from './messages';
+import error from './errors';
+import { gameStarted, numberOfPlayers, currentTeam, currentPlayer, teams, score } from './game';
 
 function cardsInPlay(state = List(LiteratureDeck), action) {
   switch (action.type) {
@@ -85,20 +44,37 @@ function setsDiscarded(state = Set(), action) {
   }
 }
 
-function error(state = false, action) {
+function memoryDeck(state = List(LiteratureDeck), action) {
   switch (action.type) {
-    case Constants.HANDLE_ERROR:
-      return {errorMessage: action.errorMessage};
+    case Constants.START_GAME:
+      return state.map(card => card.set('possibleOwners', Range(1, action.numberOfPlayers + 1).toJS()));
+
+    case Constants.TRANSFER_CARD:
+      let transferCardIndex = state.findIndex(card => card.get('card') === action.askedCard);
+
+      return state.setIn([transferCardIndex, 'owner'], action.askingPlayer);
+
+    case Constants.ASK_QUESTION:
+      let askedCardIndex = state.findIndex(card => card.get('card') === action.askedCard);
+      let askedCard = state.get(askedCardIndex);
+      let askedSet = askedCard.get('set');
+
+      return state;
 
     default:
-      return false;
+      return state;
   }
 }
 
-function memory(state = Map(), action) {
+function memorySets(state = Map(), action) {
   switch (action.type) {
-    case Constants.TRANSFER_CARD:
-      return state.set(action.askedCard, action.askingPlayer);
+    case Constants.ASK_QUESTION:
+      let askedCard = cardFromId(action.askedCard);
+      let askedSet = askedCard.get('set');
+      let knownSets = state.get(action.askingPlayer, Set());
+      let updatedSets = knownSets.add(askedSet);
+
+      return state.set(action.askingPlayer, updatedSets);
 
     default:
       return state;
@@ -109,10 +85,14 @@ export default combineReducers({
   error,
   numberOfPlayers,
   gameStarted,
-  currentTurn,
+  currentTeam,
+  currentPlayer,
   score,
   cardsInPlay,
   setsDiscarded,
-  memory
+  memoryDeck,
+  memorySets,
+  messages,
+  teams
 });
 

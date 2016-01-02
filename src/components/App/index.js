@@ -3,12 +3,14 @@ import { connect } from 'react-redux';
 
 import StartGameButton from 'components/StartGameButton';
 import DeclareSetButton from 'components/DeclareSetButton';
-import AskPlayerButton from 'components/AskPlayerButton';
+import CpuPlayButton from 'components/CpuPlayButton';
+import PlayerMenu from 'components/PlayerMenu';
 import ErrorBanner from 'components/ErrorBanner';
 import PlayerHand from 'components/PlayerHand';
 import Main from 'components/Main';
 import GameInfo from 'components/GameInfo';
 import Menu from 'components/Menu';
+import Messages from 'components/Messages';
 
 class App extends React.Component {
   render() {
@@ -37,17 +39,20 @@ class App extends React.Component {
         />
 
         <Menu>
-          <AskPlayerButton
-            numberOfPlayers={this.props.numberOfPlayers}
-            cardsInPlay={this.props.cardsInPlay}
-            myHand={myHand}
-          />
-          {/*<DeclareSetButton
-            discardedSets={this.props.setsDiscarded}
-            currentTurn={this.props.currentTurn}
-            numberOfPlayers={this.props.numberOfPlayers}
-          />*/}
+          {(() => {
+            if (this.props.currentPlayer !== '1') return <CpuPlayButton />;
+            return (
+              <PlayerMenu
+                myHand={myHand}
+                numberOfPlayers={this.props.numberOfPlayers}
+                cardsInPlay={this.props.cardsInPlay}
+                setsDiscarded={this.props.setsDiscarded}
+              />
+            );
+          })()}
         </Menu>
+
+        <Messages messages={this.props.messages} />
       </div>
     );
   }

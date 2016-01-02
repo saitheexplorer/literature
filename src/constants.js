@@ -1,4 +1,5 @@
 export default [
+  'ASK_QUESTION',
   'BUNGLE_SET',
   'CHANGE_TURN',
   'DECLARE_SET',

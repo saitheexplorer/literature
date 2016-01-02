@@ -2,9 +2,10 @@ import React from 'react';
 import { Range } from 'immutable';
 
 import Store from 'stores';
-import { askPlayer, handleError } from 'actions';
+import { askPlayer } from 'actions/turn';
+import { handleError } from 'actions/index';
 
-export default class AskPlayerButton extends React.Component {
+export default class AskMenu extends React.Component {
   constructor(props) {
     super(props);
 
@@ -29,30 +30,16 @@ export default class AskPlayerButton extends React.Component {
   }
 
   render() {
-    let players = Range(2, this.props.numberOfPlayers + 1, 2)
-      .map(player => <option key={player} value={String(player)}>Player {player}</option>);
-
-
-    let myHand = this.props.myHand;
-    let mySets = myHand.groupBy(card => card.get('set')).keySeq();
-    let myCards = myHand.map(card => card.get('card')).toJS();
-
-    let askableCards = this.props.cardsInPlay
-      .filter(card => myCards.indexOf(card.get('card')) === -1)
-      .filter(card => mySets.includes(card.get('set')))
-      .sortBy(card => card.get('suit') + card.get('rank'))
-      .map(card => <option key={card.get('card')} value={card.get('card')}>{card.get('card')}</option>);
-
     return (
       <div>
         <select onChange={this.onPlayerChange}>
           <option value="">Select a player...</option>
-          {players}
+          {this.props.opponents}
         </select>
 
         <select onChange={this.onCardChange}>
           <option value="">Select a card to ask for...</option>
-          {askableCards}
+          {this.props.askableCards}
         </select>
 
         <button onClick={this.onAsk}>Ask</button>
