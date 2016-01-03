@@ -1,32 +1,33 @@
 import Constants from 'constants';
 
-import { updateScore, changeTurn } from 'actions/game';
+import { updateScore } from 'actions/game';
+import sendMessage from 'actions/messages';
+import manageTurn, { passTurnToNextOpponent } from 'actions/turn';
 
-export function tryToDeclareSet(set, calls) {
+export default function tryToDeclareSet(set, calls) {
   return (dispatch, getState) => {
     let state = getState();
     let cardsInPlay = state.cardsInPlay
     let currentPlayer = state.currentPlayer;
 
-    let cardsInSet = cardsInPlay.filter(card => card.get('set') === set);
-
     let checkedCalls = calls
       .map(call => {
-        call.actualOwner = cardsInSet.find(card => card.get('id') === call.id).get('owner');
+        let actualOwner = cardsInPlay.find(card => card.get('id') === call.get('id')).get('owner');
 
-        return call;
+        return call.set('actualOwner', actualOwner);
       });
 
-    let badCalls = checkedCalls.filter(call => call.owner !== call.actualOwner);
+    let badCalls = checkedCalls.filter(call => call.get('owner') !== call.get('actualOwner'));
 
-    if (badCalls.size) dispatch(bungleSet())
-    else dispatch(declareSet());
+    if (badCalls.size) dispatch(bungleSet(set, badCalls.toJS()));
+    else dispatch(declareSet(set));
 
     dispatch(removeSet(set));
+    dispatch(manageTurn());
   };
 }
 
-function bungleSet() {
+function bungleSet(set, badCalls) {
   return (dispatch, getState) => {
     let state = getState();
 
@@ -35,13 +36,17 @@ function bungleSet() {
 
     let nextPlayer = (currentPlayer + 1 > state.numberOfPlayers) ? '1' : String(currentPlayer + 1);
 
+    dispatch(sendMessage(`${set} was bungled. ${JSON.stringify(badCalls)}`));
     dispatch(updateScore(state.currentTeam, -0.5));
-    dispatch(changeTurn(nextPlayer));
+    dispatch(passTurnToNextOpponent());
   }
 }
 
-function declareSet() {
-  return (dispatch, getState) => dispatch(updateScore(getState().currentTeam, 1));
+function declareSet(set) {
+  return (dispatch, getState) => {
+    dispatch(sendMessage(`${set} was correctly called.`));
+    dispatch(updateScore(getState().currentTeam, 1));
+  }
 }
 
 function removeSet(set) {

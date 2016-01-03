@@ -3,7 +3,7 @@ import { Map, Range } from 'immutable';
 
 import Store from 'stores';
 
-import { tryToDeclareSet } from 'actions/set';
+import tryToDeclareSet from 'actions/set';
 import { handleError } from 'actions';
 
 import { cardFromId } from 'utils/card';
@@ -33,7 +33,7 @@ export default class DeclareSetSelect extends React.Component {
     let owner = event[0];
     let id = event[1];
 
-    this.setState({calls: this.state.calls.set(id, {owner, id})});
+    this.setState({calls: this.state.calls.set(id, Map({owner, id}))});
   }
 
   render() {

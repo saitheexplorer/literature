@@ -1,5 +1,35 @@
 import React from 'react';
 
+import CpuPlayButton from 'components/CpuPlayButton';
+import PlayerMenu from 'components/PlayerMenu';
+
 import style from './style.css';
 
-export default (props) => <div className="menu column"><h1>Menu</h1>{props.children}<br /><br /></div>;
+
+export default class Menu extends React.Component {
+  render() {
+    let element = <CpuPlayButton />;
+
+    console.log(this.props);
+
+    if (this.props.currentPlayer === '1') element = (
+      <PlayerMenu
+        myHand={this.props.myHand}
+        numberOfPlayers={this.props.numberOfPlayers}
+        cardsInPlay={this.props.cardsInPlay}
+        setsDiscarded={this.props.setsDiscarded}
+      />
+    );
+
+    return (
+      <div className="menu column">
+        <h1>Menu</h1>
+          {element}
+        <br />
+        <br />
+      </div>
+    );
+
+  }
+}
+

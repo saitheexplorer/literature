@@ -1,31 +1,75 @@
 import Constants from 'constants';
 
-import { changeTurn } from 'actions/game';
+import { endGame } from 'actions/game';
+import { outOfCards } from 'actions';
 
-export function askPlayer(askingPlayer, askedPlayer, askedCard) {
+export default function manageTurn() {
   return (dispatch, getState) => {
-    dispatch(askQuestion(askingPlayer, askedCard));
+    let state = getState();
+    let currentPlayer = state.currentPlayer;
+    let cardsInPlay = state.cardsInPlay;
+    let numberOfPlayers = state.numberOfPlayers;
 
-    let cardIndex = getState().cardsInPlay.findIndex(card => card.get('card') === askedCard && card.get('owner') === askedPlayer);
+    // if no cards are in play, end game
+    if (!cardsInPlay.size) return dispatch(endGame());
 
-    if (cardIndex !== -1) dispatch(transferCard(askingPlayer, cardIndex, askedCard));
-    else dispatch(changeTurn(askedPlayer));
-  };
-}
+    let currentTeam = state.teams.get(state.currentTeam);
+    let opposingTeam = state.teams.get(state.currentTeam === 'A' ? 'B' : 'A');
 
-function askQuestion(askingPlayer, askedCard) {
-  return {
-    type: Constants.ASK_QUESTION,
-    askingPlayer,
-    askedCard
-  };
-}
+    // notify state of all players without cards
+    let allPlayers = currentTeam
+      .concat(opposingTeam)
+      .forEach(player => {
+        let hand = cardsInPlay.filter(card => card.get('owner') === player);
 
-function transferCard(askingPlayer, cardIndex, askedCard) {
-  return {
-    type: Constants.TRANSFER_CARD,
-    askingPlayer,
-    cardIndex,
-    askedCard
+        if (!hand.size) dispatch(outOfCards(player));
+      });
+
+    // if team has no cards, pass turn to opponent
+    let teamCards = cardsInPlay.filter(card => opposingTeam.indexOf(card.get('owner')) === -1);
+    if (teamCards.size === 0) return dispatch(passTurnToNextOpponent());
+
+    // if current player is out of cards, pass turn to next teammate
+    let currentHand = cardsInPlay.filter(card => card.get('owner') === currentPlayer);
+    if (!currentHand.size) dispatch(passTurnToNextTeammate());
   }
+}
+
+function passTurnToNextTeammate() {
+  return (dispatch, getState) => {
+    let state = getState();
+
+    let numberOfPlayers = state.numberOfPlayers;
+    let currentPlayer = state.currentPlayer;
+    let teams = state.teams;
+
+    let teammates = teams.get(state.currentTeam);
+
+    let currentPlayerIndex = teammates.indexOf(currentPlayer);
+    let nextTeammateIndex = currentPlayerIndex + 1;
+
+    let nextTeammate = teammates[nextTeammateIndex] ? teammates[nextTeammateIndex] : teammates[0];
+
+    dispatch(changeTurn(nextTeammate));
+  }
+}
+
+export function passTurnToNextOpponent() {
+  return (dispatch, getState) => {
+    let state = getState();
+
+    let currentPlayer = state.currentPlayer;
+    let nextPlayerTmp = parseInt(currentPlayer) + 1;
+
+    let nextPlayer = nextPlayerTmp > state.numberOfPlayers ? '1' : String(nextPlayerTmp);
+
+    dispatch(changeTurn(nextPlayer));
+  }
+}
+
+export function changeTurn(player) {
+  return {
+    type: Constants.CHANGE_TURN,
+    player
+  };
 }

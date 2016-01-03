@@ -5,7 +5,6 @@ import Store from 'stores';
 
 import DeclareSetSelect from 'components/DeclareSetSelect';
 
-import { tryToDeclareSet } from 'actions/set';
 import { handleError } from 'actions';
 
 import { Sets } from 'utils/deck';

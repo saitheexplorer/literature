@@ -2,8 +2,8 @@ import React from 'react';
 import { Range } from 'immutable';
 
 import Store from 'stores';
-import { askPlayer } from 'actions/turn';
-import { handleError } from 'actions/index';
+import askPlayer from 'actions/question';
+import { handleError } from 'actions';
 
 export default class AskMenu extends React.Component {
   constructor(props) {

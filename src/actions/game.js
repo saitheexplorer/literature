@@ -15,9 +15,8 @@ export function updateScore(team, diff) {
   }
 }
 
-export function changeTurn(player) {
+export function endGame() {
   return {
-    type: Constants.CHANGE_TURN,
-    player
+    type: Constants.END_GAME
   };
 }

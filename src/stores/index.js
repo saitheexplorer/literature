@@ -5,7 +5,7 @@ import literatureApp from 'reducers';
 
 let middleware = [thunk];
 
-if (ENV !== 'production') middleware = [...middleware, createLogger()];
+// if (ENV !== 'production') middleware = [...middleware, createLogger()];
 
 const createStoreWithMiddleware = applyMiddleware(...middleware)(createStore);
 

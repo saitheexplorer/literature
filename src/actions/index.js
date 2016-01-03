@@ -9,3 +9,10 @@ export function handleError(errorMessage) {
     errorMessage
   }
 }
+
+export function outOfCards(player) {
+  return {
+    type: Constants.OUT_OF_CARDS,
+    player
+  }
+}
