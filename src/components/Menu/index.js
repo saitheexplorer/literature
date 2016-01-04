@@ -10,8 +10,6 @@ export default class Menu extends React.Component {
   render() {
     let element = <CpuPlayButton />;
 
-    console.log(this.props);
-
     if (this.props.currentPlayer === '1') element = (
       <PlayerMenu
         myHand={this.props.myHand}

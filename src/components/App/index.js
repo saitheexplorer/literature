@@ -16,7 +16,7 @@ import style from './style.css';
 class App extends React.Component {
   render() {
     if (!this.props.gameStarted) return <StartGameButton gameStarted={this.props.gameStarted} />;
-    if (this.props.gameEnded) return <GameOver score={this.props.score} />;
+    if (this.props.gameEnded) return <GameOver score={this.props.score} messages={this.props.messages} />;
 
     let hands = this.props.cardsInPlay.groupBy(card => card.get('owner'));
     let myHand = hands.get(this.props.currentPlayer);
@@ -44,7 +44,7 @@ class App extends React.Component {
           currentPlayer={this.props.currentPlayer}
           myHand={myHand}
           numberOfPlayers={this.props.numberOfPlayers}
-          setDiscarded={this.props.setsDiscarded}
+          setsDiscarded={this.props.setsDiscarded}
           cardsInPlay={this.props.cardsInPlay}
         />
 
