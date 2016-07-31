@@ -6,8 +6,8 @@
   "scripts": {
     "build": "webpack",
     "build:dist": "NODE_ENV=production webpack -p",
-    "clean": "rm dist/* && touch dist/.gitkeep",
-    "copy": "cp src/index.html dist",
+    "clean": "rm -rf dist/*",
+    "copy": "cp src/index.html dist && cp -R src/images/ dist/img",
     "watch": "npm run build -- --watch",
     "serve:dev": "npm run clean && npm run copy && webpack-dev-server --content-base dist --inline --hot",
     "serve:dist": "npm run copy && npm run build:dist && node index.js"
