@@ -3,8 +3,6 @@ const webpack = require('webpack');
 
 const src = path.join(__dirname, 'src');
 
-const templateContent = `<!DOCTYPE html><html><head><title></title></head><body><div id="root"></div></body></html>`
-
 module.exports = {
   entry: src,
 
