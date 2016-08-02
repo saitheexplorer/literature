@@ -17,3 +17,17 @@ export function cancelAskOrDeclare() {
     type: Constants.CANCEL_ASK_OR_DECLARE,
   };
 }
+
+export function takeCpuTurn() {
+  return {
+    type: Constants.TAKE_CPU_TURN,
+  };
+}
+
+export function askQuestion(player, card) {
+  return {
+    type: Constants.ASK_QUESTION,
+    player,
+    card,
+  };
+}

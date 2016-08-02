@@ -18,7 +18,11 @@ const Table = ({ gameStarted, startGameAction, deck }) => {
 
   const hands = getHandsFromDeck(deck);
 
-  return <div>{hands.map((x, i) => <PlayerHand key={i} cards={x} />)}</div>;
+  return (
+    <div>
+      {hands.map((x, i) => <PlayerHand key={i} cards={x} />)}
+    </div>
+  );
 };
 
 const mapStateToProps = ({ game, deck }) => ({

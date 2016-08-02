@@ -2,29 +2,31 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import MainMenu from 'components/MainMenu';
-import AskMenu from 'components/AskMenu';
-import DeclareMenu from 'components/DeclareMenu';
 
-import { startDeclaringSet, startAsking, cancelAskOrDeclare } from 'actions/turn';
+import {
+  startDeclaringSet,
+  startAsking,
+  cancelAskOrDeclare,
+  takeCpuTurn,
+} from 'actions/turn';
 
-const Menu = ({ isAsking, isDeclaring, onAsk, onDeclare, cancel, gameStarted }) => {
-  if (!gameStarted) return false;
+const Menu = (props) => {
+  if (!props.gameStarted) return false;
 
-  if (!isAsking && !isDeclaring) return <MainMenu onDeclare={onDeclare} onAsk={onAsk} />;
-
-  if (isAsking) return <AskMenu cancel={cancel} />;
-  if (isDeclaring) return <DeclareMenu cancel={cancel} />;
-
-  return false;
+  return <MainMenu {...props} />;
 };
 
 Menu.propTypes = {
   isAsking: React.PropTypes.bool.isRequired,
   isDeclaring: React.PropTypes.bool.isRequired,
   gameStarted: React.PropTypes.bool.isRequired,
+
+  currentPlayer: React.PropTypes.string.isRequired,
+
   onDeclare: React.PropTypes.func.isRequired,
   onAsk: React.PropTypes.func.isRequired,
   cancel: React.PropTypes.func.isRequired,
+  takeCpuTurn: React.PropTypes.func.isRequired,
 };
 
 Menu.defaultProps = {
@@ -33,16 +35,19 @@ Menu.defaultProps = {
   gameStarted: false,
 };
 
-const mapStateToProps = ({ player, game }) => ({
+const mapStateToProps = ({ player, game, deck }) => ({
+  deck,
   gameStarted: game.gameStarted,
   isAsking: player.isAsking,
   isDeclaring: player.isDeclaring,
+  currentPlayer: player.currentPlayer,
 });
 
 const mapDispatchToProps = dispatch => ({
   onDeclare: () => dispatch(startDeclaringSet()),
   onAsk: () => dispatch(startAsking()),
   cancel: () => dispatch(cancelAskOrDeclare()),
+  takeCpuTurn: () => dispatch(takeCpuTurn()),
 });
 
 export default connect(

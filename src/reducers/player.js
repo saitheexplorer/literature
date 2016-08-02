@@ -4,6 +4,12 @@ import Constants from 'constants';
 
 function currentPlayer(state = null, action) {
   switch (action.type) {
+    case Constants.START_GAME:
+      return '1';
+
+    case Constants.CHANGE_PLAYER:
+      return String(action.player);
+
     default:
       return state;
   }
@@ -11,6 +17,12 @@ function currentPlayer(state = null, action) {
 
 function currentTeam(state = null, action) {
   switch (action.type) {
+    case Constants.START_GAME:
+      return 'A';
+
+    case Constants.CHANGE_PLAYER:
+      return parseInt(action.player, 10) % 2 === 1 ? 'A' : 'B';
+
     default:
       return state;
   }
@@ -20,9 +32,6 @@ function isAsking(state = false, action) {
   switch (action.type) {
     case Constants.START_ASKING:
       return true;
-
-    case Constants.START_DECLARING_SET:
-      return false;
 
     case Constants.CANCEL_ASK_OR_DECLARE:
       return false;
@@ -36,9 +45,6 @@ function isDeclaring(state = false, action) {
   switch (action.type) {
     case Constants.START_DECLARING_SET:
       return true;
-
-    case Constants.START_ASKING:
-      return false;
 
     case Constants.CANCEL_ASK_OR_DECLARE:
       return false;

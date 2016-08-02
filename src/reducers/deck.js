@@ -1,5 +1,6 @@
-import Constants from 'constants';
+import Immutable from 'seamless-immutable';
 
+import Constants from 'constants';
 import literatureDeck from 'utils/deck';
 
 function deck(state = literatureDeck(), action) {
@@ -16,6 +17,9 @@ function deck(state = literatureDeck(), action) {
 
         return newCard;
       });
+
+    case Constants.REMOVE_SET:
+      return Immutable.from(state.filter(x => x.setName !== action.setName));
 
     default:
       return state;

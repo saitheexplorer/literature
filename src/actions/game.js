@@ -6,3 +6,10 @@ export function startGame(numberOfPlayers) {
     numberOfPlayers,
   };
 }
+
+export function changePlayer(player) {
+  return {
+    type: Constants.CHANGE_PLAYER,
+    player,
+  };
+}

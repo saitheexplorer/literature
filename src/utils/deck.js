@@ -10,7 +10,14 @@ function literatureDeck() {
     for (let rank = 3; rank < 15; rank++) {
       const paddedRank = padStart(rank, 2, '0');
 
-      deck.push({ rank, suit, id: `${paddedRank}_${suit}` });
+      const card = {
+        rank,
+        suit,
+        id: `${suit}_${paddedRank}`,
+        setName: `${rank > 8 ? 'major' : 'minor'} ${suit}`,
+      };
+
+      deck.push(card);
     }
   });
 
