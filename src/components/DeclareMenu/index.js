@@ -2,10 +2,10 @@ import React from 'react';
 
 import CancelButton from 'components/CancelButton';
 
-const DeclareMenu = ({ cancel }) => <CancelButton cancel={cancel} />;
+const DeclareMenu = ({ onCancel }) => <CancelButton cancel={onCancel} />;
 
 DeclareMenu.propTypes = {
-  cancel: React.PropTypes.func.isRequired,
+  onCancel: React.PropTypes.func.isRequired,
 };
 
 export default DeclareMenu;

@@ -1,3 +1,4 @@
+import Immutable from 'seamless-immutable';
 import { combineReducers } from 'redux';
 
 import Constants from 'constants';
@@ -14,8 +15,14 @@ function numberOfPlayers(state = false, action) {
   return action.numberOfPlayers;
 }
 
-function score(state = { A: 0, B: 0 }) {
-  return state;
+function score(state = Immutable.from({ A: 0, B: 0 }), action) {
+  switch (action.type) {
+    case Constants.UPDATE_SCORE:
+      return state.merge({ [action.team]: state[action.team] + action.diff });
+
+    default:
+      return state;
+  }
 }
 
 export default combineReducers({

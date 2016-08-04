@@ -19,7 +19,7 @@ const getAskableCardsFromDeck = sets => compose(
   filter(x => x.owner !== '1')
 );
 
-const AskMenu = ({ cancel, deck, onAskSubmit }) => {
+const AskMenu = ({ onCancel, deck, onAskSubmit, onChangeAskedCard, onChangeAskedPlayer }) => {
   const hand = deck.filter(x => x.owner === '1');
   const sets = getSetsFromHand(hand);
 
@@ -27,12 +27,14 @@ const AskMenu = ({ cancel, deck, onAskSubmit }) => {
 
   return (
     <div>
-      <select>
-        <option>Player 2</option>
-        <option>Player 4</option>
-        <option>Player 6</option>
+      <select onChange={e => onChangeAskedPlayer(e.target.value)}>
+        <option>Select a player...</option>
+        <option value={'2'}>Player 2</option>
+        <option value={'4'}>Player 4</option>
+        <option value={'6'}>Player 6</option>
       </select>
-      <select>
+      <select onChange={e => onChangeAskedCard(e.target.value)}>
+        <option>Select a card...</option>
         {askableCardsFromDeck.map(x => <option key={x.id} v>{x.id}</option>)}
       </select>
       <p>
@@ -41,7 +43,7 @@ const AskMenu = ({ cancel, deck, onAskSubmit }) => {
         </button>
       </p>
       <p>
-        <CancelButton cancel={cancel} />
+        <CancelButton cancel={onCancel} />
       </p>
     </div>
   );
@@ -50,7 +52,9 @@ const AskMenu = ({ cancel, deck, onAskSubmit }) => {
 AskMenu.propTypes = {
   deck: React.PropTypes.array.isRequired,
 
-  cancel: React.PropTypes.func.isRequired,
+  onCancel: React.PropTypes.func.isRequired,
+  onChangeAskedPlayer: React.PropTypes.func.isRequired,
+  onChangeAskedCard: React.PropTypes.func.isRequired,
   onAskSubmit: React.PropTypes.func.isRequired,
 };
 

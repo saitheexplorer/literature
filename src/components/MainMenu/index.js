@@ -5,8 +5,16 @@ import DeclareMenu from 'components/DeclareMenu';
 import CpuTurnButton from 'components/CpuTurnButton';
 
 const MainMenu = props => {
-  if (props.isAsking) return <AskMenu cancel={props.cancel} deck={props.deck} />;
-  if (props.isDeclaring) return <DeclareMenu cancel={props.cancel} />;
+  if (props.isAsking) return (
+    <AskMenu
+      deck={props.deck}
+      onChangeAskedPlayer={props.onChangeAskedPlayer}
+      onChangeAskedCard={props.onChangeAskedCard}
+      onAskSubmit={props.onAskSubmit}
+      onCancel={props.onCancelAskOrDeclare}
+    />
+  );
+  if (props.isDeclaring) return <DeclareMenu onCancel={props.onCancelAskOrDeclare} />;
 
   if (props.currentPlayer !== '1') return <CpuTurnButton takeCpuTurn={props.takeCpuTurn} />;
 
@@ -28,8 +36,14 @@ MainMenu.propTypes = {
 
   onAsk: React.PropTypes.func.isRequired,
   onDeclare: React.PropTypes.func.isRequired,
-  cancel: React.PropTypes.func.isRequired,
+  onCancelAskOrDeclare: React.PropTypes.func.isRequired,
+
+  onChangeAskedCard: React.PropTypes.func.isRequired,
+  onChangeAskedPlayer: React.PropTypes.func.isRequired,
+  onAskSubmit: React.PropTypes.func.isRequired,
+
   takeCpuTurn: React.PropTypes.func.isRequired,
+
 };
 
 export default MainMenu;

@@ -9,7 +9,7 @@ const sortById = sortBy(get('id'));
 const PlayerHand = ({ cards }) => {
   const owner = cards[0].owner; // hacky, should be passed in as prop
 
-  if (owner !== '1') return <p>Player {owner} - {cards.length} cards</p>;
+  // if (owner !== '1') return <p>Player {owner} - {cards.length} cards</p>;
 
   const cardListItems = sortById(cards).map((c, i) => <Card key={i} id={c.id} />);
 

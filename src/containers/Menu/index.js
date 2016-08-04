@@ -3,12 +3,16 @@ import { connect } from 'react-redux';
 
 import MainMenu from 'components/MainMenu';
 
+import { takeCpuTurn } from 'actions/cpu';
 import {
   startDeclaringSet,
   startAsking,
   cancelAskOrDeclare,
-  takeCpuTurn,
+  changeAskedCard,
+  changeAskedPlayer,
+  askPlayerQuestion,
 } from 'actions/turn';
+
 
 const Menu = (props) => {
   if (!props.gameStarted) return false;
@@ -25,7 +29,10 @@ Menu.propTypes = {
 
   onDeclare: React.PropTypes.func.isRequired,
   onAsk: React.PropTypes.func.isRequired,
-  cancel: React.PropTypes.func.isRequired,
+  onAskSubmit: React.PropTypes.func.isRequired,
+  onCancelAskOrDeclare: React.PropTypes.func.isRequired,
+  onChangeAskedCard: React.PropTypes.func.isRequired,
+  onChangeAskedPlayer: React.PropTypes.func.isRequired,
   takeCpuTurn: React.PropTypes.func.isRequired,
 };
 
@@ -35,19 +42,24 @@ Menu.defaultProps = {
   gameStarted: false,
 };
 
-const mapStateToProps = ({ player, game, deck }) => ({
+const mapStateToProps = ({ player, game, deck, question }) => ({
   deck,
   gameStarted: game.gameStarted,
   isAsking: player.isAsking,
   isDeclaring: player.isDeclaring,
   currentPlayer: player.currentPlayer,
+  askedPlayer: question.askedPlayer,
+  askedCard: question.askedCard,
 });
 
 const mapDispatchToProps = dispatch => ({
   onDeclare: () => dispatch(startDeclaringSet()),
   onAsk: () => dispatch(startAsking()),
-  cancel: () => dispatch(cancelAskOrDeclare()),
+  onCancelAskOrDeclare: () => dispatch(cancelAskOrDeclare()),
   takeCpuTurn: () => dispatch(takeCpuTurn()),
+  onChangeAskedCard: card => dispatch(changeAskedCard(card)),
+  onChangeAskedPlayer: player => dispatch(changeAskedPlayer(player)),
+  onAskSubmit: () => dispatch(askPlayerQuestion()),
 });
 
 export default connect(

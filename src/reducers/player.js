@@ -2,7 +2,7 @@ import { combineReducers } from 'redux';
 
 import Constants from 'constants';
 
-function currentPlayer(state = null, action) {
+function currentPlayer(state = '0', action) {
   switch (action.type) {
     case Constants.START_GAME:
       return '1';
@@ -15,7 +15,7 @@ function currentPlayer(state = null, action) {
   }
 }
 
-function currentTeam(state = null, action) {
+function currentTeam(state = '0', action) {
   switch (action.type) {
     case Constants.START_GAME:
       return 'A';

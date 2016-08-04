@@ -7,9 +7,17 @@ export function startGame(numberOfPlayers) {
   };
 }
 
-export function changePlayer(player) {
+export function changeCurrentPlayer(player) {
   return {
     type: Constants.CHANGE_PLAYER,
     player,
+  };
+}
+
+export function updateScore(team, diff) {
+  return {
+    type: Constants.UPDATE_SCORE,
+    team,
+    diff,
   };
 }
