@@ -10,9 +10,9 @@ import {
   cancelAskOrDeclare,
   changeAskedCard,
   changeAskedPlayer,
-  askPlayerQuestion,
 } from 'actions/turn';
 
+import { askPlayer } from 'actions/question';
 
 const Menu = (props) => {
   if (!props.gameStarted) return false;
@@ -42,14 +42,14 @@ Menu.defaultProps = {
   gameStarted: false,
 };
 
-const mapStateToProps = ({ player, game, deck, question }) => ({
+const mapStateToProps = ({ player, game, deck }) => ({
   deck,
+
   gameStarted: game.gameStarted,
+  currentPlayer: game.currentPlayer,
+
   isAsking: player.isAsking,
   isDeclaring: player.isDeclaring,
-  currentPlayer: player.currentPlayer,
-  askedPlayer: question.askedPlayer,
-  askedCard: question.askedCard,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -59,7 +59,8 @@ const mapDispatchToProps = dispatch => ({
   takeCpuTurn: () => dispatch(takeCpuTurn()),
   onChangeAskedCard: card => dispatch(changeAskedCard(card)),
   onChangeAskedPlayer: player => dispatch(changeAskedPlayer(player)),
-  onAskSubmit: () => dispatch(askPlayerQuestion()),
+  onAskSubmit: (askingPlayer, cardId, askedPlayer) =>
+    dispatch(askPlayer(askingPlayer, cardId, askedPlayer)),
 });
 
 export default connect(

@@ -1,6 +1,6 @@
 import Constants from 'constants';
 
-export function transferCard(askingPlayer, cardId) {
+export function transferCard({ askingPlayer, cardId }) {
   return {
     type: Constants.TRANSFER_CARD,
     askingPlayer,

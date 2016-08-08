@@ -15,7 +15,7 @@ const PlayerHand = ({ cards }) => {
 
   return (
     <div>
-      <p>Your cards:</p>
+      <p>Player {owner}</p>
       <ul>{cardListItems}</ul>
     </div>
   );
