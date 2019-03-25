@@ -1,62 +1,42 @@
 import React from 'react';
-import { connect } from 'react-redux';
 
-import StartGameButton from 'components/StartGameButton';
-import DeclareSetButton from 'components/DeclareSetButton';
-import ErrorBanner from 'components/ErrorBanner';
-import PlayerHand from 'components/PlayerHand';
-import Main from 'components/Main';
-import GameInfo from 'components/GameInfo';
-import GameOver from 'components/GameOver';
-import Menu from 'components/Menu';
-import Messages from 'components/Messages';
+import ErrorBanner from '../../containers/ErrorBanner';
+import GameInfo from '../../containers/GameInfo';
+import Menu from '../../containers/Menu';
+import Messages from '../../containers/Messages';
 
-import style from './style.css';
+import StartGameButton from '../../components/StartGameButton';
+import PlayerHand from '../../components/PlayerHand';
+import GameOver from '../../components/GameOver';
 
-class App extends React.Component {
-  render() {
-    if (!this.props.gameStarted) return <StartGameButton gameStarted={this.props.gameStarted} />;
-    if (this.props.gameEnded) return <GameOver score={this.props.score} messages={this.props.messages} />;
+import './style.css';
 
-    let hands = this.props.cardsInPlay.groupBy(card => card.get('owner'));
-    let myHand = hands.get(this.props.currentPlayer);
+const App = props => {
+  if (!props.gameStarted)
+    return <StartGameButton startGame={props.startGame} />;
+  if (props.gameEnded)
+    return <GameOver score={props.score} messages={props.messages} />;
 
-    return (
-      <div className="container">
-        <ErrorBanner message={this.props.error.errorMessage} />
+  const hands = props.cardsInPlay.groupBy(card => card.get('owner'));
 
-        <Main>
-          {hands
-            .sortBy((hand, player) => player)
-            .entrySeq()
-            .map((entry) => <PlayerHand key={entry[0]} player={entry[0]} hand={entry[1]} />)}
-        </Main>
+  return (
+    <div className="container">
+      <ErrorBanner />
 
-        <GameInfo
-          score={this.props.score}
-          gameStarted={this.props.gameStarted}
-          currentTurn={this.props.currentPlayer}
-          cardsInPlay={this.props.cardsInPlay}
-          setsDiscarded={this.props.setsDiscarded}
-        />
-
-        <Menu
-          currentPlayer={this.props.currentPlayer}
-          myHand={myHand}
-          numberOfPlayers={this.props.numberOfPlayers}
-          setsDiscarded={this.props.setsDiscarded}
-          cardsInPlay={this.props.cardsInPlay}
-        />
-
-        <Messages messages={this.props.messages} />
+      <div className="main column">
+        {hands
+          .sortBy((hand, player) => player)
+          .entrySeq()
+          .map(entry => (
+            <PlayerHand key={entry[0]} player={entry[0]} hand={entry[1]} />
+          ))}
       </div>
-    );
-  }
-}
 
-export default connect(select)(App);
+      <GameInfo />
+      <Menu />
+      <Messages />
+    </div>
+  );
+};
 
-function select(state) {
-  return state;
-}
-
+export default App;

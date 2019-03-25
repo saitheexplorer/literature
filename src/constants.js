@@ -1,4 +1,6 @@
-export default [
+import keykey from 'keykey';
+
+export default keykey([
   'ASK_QUESTION',
   'BUNGLE_SET',
   'CHANGE_TURN',
@@ -11,5 +13,5 @@ export default [
   'SEND_MESSAGE',
   'START_GAME',
   'TRANSFER_CARD',
-  'UPDATE_SCORE'
-].reduce((memo, val) => Object.assign({[val]: val}, memo), {});
+  'UPDATE_SCORE',
+]);

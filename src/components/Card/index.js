@@ -1,9 +1,9 @@
 import React from 'react';
 
-const Card = ({ id }) => {
-  const imageUrl = `/img/${id}.svg`;
+const Card = ({ id, hidden }) => {
+  const imagePath = hidden ? 'hidden' : id;
 
-  return <img src={imageUrl} height='100' />;
-}
+  return <img src={`/img/${imagePath}.svg`} height="100" alt={id} />;
+};
 
 export default Card;

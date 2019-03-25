@@ -1,9 +1,8 @@
 import { combineReducers } from 'redux';
-import Immutable, { Map, List, OrderedSet, Range, Set } from 'immutable';
+import { List, Set } from 'immutable';
 
-import Constants from 'constants';
-import LiteratureDeck, { Sets } from 'utils/deck';
-import { cardFromId } from 'utils/card';
+import Constants from '../constants';
+import LiteratureDeck from '../utils/deck';
 
 import messages from './messages';
 import error from './errors';
@@ -61,6 +60,5 @@ export default combineReducers({
   setsDiscarded,
   memoryDeck,
   messages,
-  teams
+  teams,
 });
-

@@ -1,6 +1,4 @@
-import { Map, Range } from 'immutable';
-
-import Constants from 'constants';
+import Constants from '../constants';
 
 export function gameStarted(state = false, action) {
   switch (action.type) {
@@ -12,12 +10,15 @@ export function gameStarted(state = false, action) {
   }
 }
 
-export function score(state = Map({A: 0, B: 0}), action) {
-  let score = state.get(action.team, 0);
+export function score(state = { A: 0, B: 0 }, action) {
+  const score = state[action.team];
 
   switch (action.type) {
     case Constants.UPDATE_SCORE:
-      return state.set(action.team, score + action.diff);
+      return {
+        ...state,
+        [action.team]: score + action.diff,
+      };
 
     default:
       return state;

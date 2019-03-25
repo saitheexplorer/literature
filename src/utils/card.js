@@ -5,17 +5,21 @@ const faceCards = {
   '11': 'Jack',
   '12': 'Queen',
   '13': 'King',
-  '14': 'Ace'
+  '14': 'Ace',
 };
 
 export function cardFromId(id) {
-  let split = id.split('_');
+  const [suit, rank] = id.split('_');
 
-  let suit = split[0];
-  let rank = parseInt(split[1]);
+  const set = `${parseInt(rank, 10) < 9 ? 'minor' : 'major'} ${suit}`;
+  const properName = `${faceCards[rank] || rank} of ${titleize(suit)}`;
 
-  let set = `${rank < 9 ? 'minor' : 'major'} ${suit}`;
-  let properName = `${faceCards[String(rank)] || rank} of ${titleize(suit)}`
-
-  return Map({suit, rank, card: id, set, id, properName});
+  return Map({
+    suit,
+    rank,
+    card: id,
+    set,
+    id,
+    properName,
+  });
 }

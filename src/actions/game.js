@@ -1,9 +1,9 @@
-import Constants from 'constants';
+import Constants from '../constants';
 
 export function startGame(numberOfPlayers) {
   return {
     type: Constants.START_GAME,
-    numberOfPlayers
+    numberOfPlayers,
   };
 }
 
@@ -11,12 +11,12 @@ export function updateScore(team, diff) {
   return {
     type: Constants.UPDATE_SCORE,
     team,
-    diff
-  }
+    diff,
+  };
 }
 
 export function endGame() {
   return {
-    type: Constants.END_GAME
+    type: Constants.END_GAME,
   };
 }

@@ -1,4 +1,4 @@
-import Constants from 'constants';
+import Constants from '../constants';
 
 export function numberOfPlayers(state = 0, action) {
   switch (action.type) {

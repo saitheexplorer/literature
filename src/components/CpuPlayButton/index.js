@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { takeCpuTurn } from 'actions/cpu';
-import Store from 'stores';
+import { takeCpuTurn } from '../../actions/cpu';
+import Store from '../../stores';
 
 export default class CpuPlayButton extends React.Component {
   onClick() {

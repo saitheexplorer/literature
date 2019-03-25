@@ -1,13 +1,12 @@
 import React from 'react';
 
-import Messages from 'components/Messages';
+import Messages from '../../containers/Messages';
 
-export default (props) => {
-  return (
-    <div>
-      <h1>Game Over!</h1>
-      {props.score.entrySeq().map(entry => <p key={entry[0]}>Team {entry[0]} - {entry[1]}</p>)}
-      <Messages messages={props.messages} />
-    </div>
-  );
-}
+export default ({ score }) => (
+  <div>
+    <h1>Game Over!</h1>
+    <p>Team A - {score.A}</p>
+    <p>Team B - {score.B}</p>
+    <Messages />
+  </div>
+);

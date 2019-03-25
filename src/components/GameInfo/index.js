@@ -1,19 +1,18 @@
 import React from 'react';
 
-export default class GameInfo extends React.Component {
-  render() {
-    let score = this.props.score.entrySeq().map(entry => <p key={entry[0]}>Team {entry[0]} - {entry[1]}</p>);
+const GameInfo = props => {
+  return (
+    <div>
+      <h1>Info</h1>
+      <p>{props.cardsInPlay.size} cards in play.</p>
+      <p>Sets discarded: {props.setsDiscarded.join(', ')}</p>
+      <p>Current turn: {props.currentTurn} </p>
 
-    return (
-      <div>
-        <h1>Info</h1>
-        <p>{this.props.cardsInPlay.size} cards in play.</p>
-        <p>Sets discarded: {this.props.setsDiscarded.join(', ')}</p>
-        <p>Current turn: {this.props.currentTurn} </p>
+      <h4>Score</h4>
+      <p>Team A: {props.score.A}</p>
+      <p>Team B: {props.score.B}</p>
+    </div>
+  );
+};
 
-        <h4>Score</h4>
-        {score}
-      </div>
-    );
-  }
-}
+export default GameInfo;

@@ -1,12 +1,10 @@
 import React from 'react';
 import { Map, Range } from 'immutable';
 
-import Store from 'stores';
+import Store from '../../stores';
 
-import tryToDeclareSet from 'actions/set';
-import { handleError } from 'actions';
-
-import { cardFromId } from 'utils/card';
+import tryToDeclareSet from '../../actions/set';
+import { handleError } from '../../actions';
 
 export default class DeclareSetSelect extends React.Component {
   constructor(props) {
@@ -15,7 +13,7 @@ export default class DeclareSetSelect extends React.Component {
     this.onChange = this.onChange.bind(this);
     this.onDeclare = this.onDeclare.bind(this);
 
-    this.state = {calls: Map()};
+    this.state = { calls: Map() };
   }
 
   onDeclare() {
@@ -24,7 +22,7 @@ export default class DeclareSetSelect extends React.Component {
     }
 
     Store.dispatch(tryToDeclareSet(this.props.set, this.state.calls.toList()));
-    this.setState({calls: Map()})
+    this.setState({ calls: Map() });
   }
 
   onChange(e) {
@@ -33,7 +31,7 @@ export default class DeclareSetSelect extends React.Component {
     let owner = event[0];
     let id = event[1];
 
-    this.setState({calls: this.state.calls.set(id, Map({owner, id}))});
+    this.setState({ calls: this.state.calls.set(id, Map({ owner, id })) });
   }
 
   render() {
@@ -44,11 +42,15 @@ export default class DeclareSetSelect extends React.Component {
         <div key={card.get('id')}>
           <p>{card.get('id')}</p>
           <select onChange={this.onChange}>
-          {(() => {
-            return players
-              .map(player => <option key={player} value={[player, card.get('id')]}>Player {player}</option>)
-              .unshift(<option>Select a player...</option>)
-          })()}
+            {(() => {
+              return players
+                .map(player => (
+                  <option key={player} value={[player, card.get('id')]}>
+                    Player {player}
+                  </option>
+                ))
+                .unshift(<option>Select a player...</option>);
+            })()}
           </select>
         </div>
       );

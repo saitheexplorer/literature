@@ -1,23 +1,25 @@
-import Constants from 'constants';
+import Constants from '../constants';
 
-import { updateScore } from 'actions/game';
-import sendMessage from 'actions/messages';
-import manageTurn, { passTurnToNextOpponent } from 'actions/turn';
+import { updateScore } from '../actions/game';
+import sendMessage from '../actions/messages';
+import manageTurn, { passTurnToNextOpponent } from '../actions/turn';
 
 export default function tryToDeclareSet(set, calls) {
   return (dispatch, getState) => {
-    let state = getState();
-    let cardsInPlay = state.cardsInPlay
-    let currentPlayer = state.currentPlayer;
+    const state = getState();
+    const cardsInPlay = state.cardsInPlay;
 
-    let checkedCalls = calls
-      .map(call => {
-        let actualOwner = cardsInPlay.find(card => card.get('id') === call.get('id')).get('owner');
+    const checkedCalls = calls.map(call => {
+      const actualOwner = cardsInPlay
+        .find(card => card.get('id') === call.get('id'))
+        .get('owner');
 
-        return call.set('actualOwner', actualOwner);
-      });
+      return call.set('actualOwner', actualOwner);
+    });
 
-    let badCalls = checkedCalls.filter(call => call.get('owner') !== call.get('actualOwner'));
+    const badCalls = checkedCalls.filter(
+      call => call.get('owner') !== call.get('actualOwner')
+    );
 
     if (badCalls.size) dispatch(bungleSet(set, badCalls.toJS()));
     else dispatch(declareSet(set));
@@ -29,30 +31,24 @@ export default function tryToDeclareSet(set, calls) {
 
 function bungleSet(set, badCalls) {
   return (dispatch, getState) => {
-    let state = getState();
-
-    let currentPlayer = parseInt(state.currentPlayer, 10);
-    let numberOfPlayers = state.numberOfPlayers;
-
-    let nextPlayer = (currentPlayer + 1 > state.numberOfPlayers) ? '1' : String(currentPlayer + 1);
+    const state = getState();
 
     dispatch(sendMessage(`${set} was bungled. ${JSON.stringify(badCalls)}`));
     dispatch(updateScore(state.currentTeam, -0.5));
     dispatch(passTurnToNextOpponent());
-  }
+  };
 }
 
 function declareSet(set) {
   return (dispatch, getState) => {
     dispatch(sendMessage(`${set} was correctly called.`));
     dispatch(updateScore(getState().currentTeam, 1));
-  }
+  };
 }
 
 function removeSet(set) {
   return {
     type: Constants.REMOVE_SET,
-    set
+    set,
   };
 }
-
