@@ -8,7 +8,7 @@ import { passTurnToNextTeammate } from '../actions/turn';
 import {
   removePlayerFromPossibleOwners,
   simplifyPossibleOwners,
-} from 'utils/memory';
+} from '../utils/memory';
 
 export function takeCpuTurn() {
   return (dispatch, getState) => {
